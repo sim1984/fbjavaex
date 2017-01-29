@@ -51,7 +51,7 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                             search: true, // разрешён поиск
                             edittype: "text", // тип поля ввода
                             align: "right", // выравнено по правому краю
-                            formatter: 'date', // отформатировано как дата
+                            formatter: jqGridInvoice._dateTimeFormatter,//'date', // отформатировано как дата
                             sorttype: 'date', // сортируем как дату
                             formatoptions: {// формат даты
                                 srcformat: 'Y-m-d\TH:i:s',
@@ -158,6 +158,10 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                     }
                 });
             },
+            _dateTimeFormatter(cellvalue, options, rowObject) {
+                var date = new Date(cellvalue);
+                return date.toLocaleString().replace(",", "");
+            },
             // возвращает шаблон диалога редактирования
             _getTemplate: function() {
                 var template = "<div style='margin-left:15px;' id='dlgEditInvoice'>";
@@ -241,16 +245,21 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                             left: $(".container.body-content").position().left + 150,
                             template: jqGridInvoice._getTemplate(),
                             afterSubmit: jqGridInvoice.afterSubmit,
-                            addData: {
+                            editData: {
                                 CUSTOMER_ID: function() {
                                     return $('#dlgEditInvoice input[name=CUSTOMER_ID]').val();
                                 },
                                 INVOICE_DATE: function() {
-                                    var date = $('#dlgEditInvoice input[name=INVOICE_DATE]').val();
-                                    if (date) {
+                                    var datetime = $('#dlgEditInvoice input[name=INVOICE_DATE]').val();
+                                    if (datetime) {
                                         // дату надо преобразовать
-                                        var dateParts = date.split('.');                      
-                                        return dateParts[2].substring(0, 4) + '-' + dateParts[1] + '-' + dateParts[0] + 'T' + dateParts[2].substring(5);
+                                        var dateParts = datetime.split('.');          
+                                        var date = dateParts[2].substring(0, 4) + '-' + dateParts[1] + '-' + dateParts[0];
+                                        var time = dateParts[2].substring(5);
+                                        if (!time) {
+                                            time = '00:00:00';
+                                        }
+                                        return date + 'T' + time;
                                     }
                                     else
                                         return null;

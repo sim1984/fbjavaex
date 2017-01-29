@@ -113,7 +113,7 @@ public class JqGridInvoice extends JqGrid {
             makeSearchCondition(query);
         }
 
-        if (this.sIdx.equals("invoiceDate")) {
+        if (this.sIdx.equals("INVOICE_DATE")) {
             switch (this.sOrd) {
                 case "asc":
                     query.addOrderBy(INVOICE.INVOICE_DATE.asc());

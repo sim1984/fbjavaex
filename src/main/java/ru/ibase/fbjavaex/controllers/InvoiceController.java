@@ -25,6 +25,8 @@ import ru.ibase.fbjavaex.managers.InvoiceManager;
 
 import ru.ibase.fbjavaex.jqgrid.JqGridData;
 
+//import java.util.logging.*;
+
 /**
  * Контроллер счёт-фактур
  *
@@ -32,6 +34,8 @@ import ru.ibase.fbjavaex.jqgrid.JqGridData;
  */
 @Controller
 public class InvoiceController {
+    
+    //private static Logger log = Logger.getLogger(InvoiceController.class.getName());
 
     @Autowired(required = true)
     private JqGridInvoice invoiceGrid;
