@@ -63,7 +63,7 @@ public class JqGridInvoiceLine extends JqGrid {
                         PRODUCT.NAME.as("PRODUCT_NAME"),
                         INVOICE_LINE.QUANTITY,
                         INVOICE_LINE.SALE_PRICE,
-                        INVOICE_LINE.QUANTITY.mul(INVOICE_LINE.SALE_PRICE).as("TOTAL"))
+                        INVOICE_LINE.SALE_PRICE.mul(INVOICE_LINE.QUANTITY).as("TOTAL"))
                         .from(INVOICE_LINE)
                         .innerJoin(PRODUCT).on(PRODUCT.PRODUCT_ID.eq(INVOICE_LINE.PRODUCT_ID))
                         .where(INVOICE_LINE.INVOICE_ID.eq(this.invoiceId));

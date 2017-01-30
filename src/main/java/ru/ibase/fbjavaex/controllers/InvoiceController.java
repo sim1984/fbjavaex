@@ -35,7 +35,7 @@ import ru.ibase.fbjavaex.jqgrid.JqGridData;
 @Controller
 public class InvoiceController {
     
-    //private static Logger log = Logger.getLogger(InvoiceController.class.getName());
+//    private static Logger log = Logger.getLogger(InvoiceController.class.getName());
 
     @Autowired(required = true)
     private JqGridInvoice invoiceGrid;
@@ -188,11 +188,11 @@ public class InvoiceController {
     @ResponseBody
     public Map<String, Object> addInvoiceLine(
             @RequestParam(value = "INVOICE_ID", required = true, defaultValue = "0") Integer invoiceId,
-            @RequestParam(value = "CUSTOMER_ID", required = true, defaultValue = "0") Integer customerId,
-            @RequestParam(value = "QUNATITY", required = true, defaultValue = "0") Integer quantity) {
+            @RequestParam(value = "PRODUCT_ID", required = true, defaultValue = "0") Integer productId,
+            @RequestParam(value = "QUANTITY", required = true, defaultValue = "0") Integer quantity) {
         Map<String, Object> map = new HashMap<>();
         try {
-            invoiceManager.addInvoiceLine(invoiceId, customerId, quantity);
+            invoiceManager.addInvoiceLine(invoiceId, productId, quantity);
             map.put("success", true);
         } catch (Exception ex) {
             map.put("error", ex.getMessage());

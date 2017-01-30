@@ -3,6 +3,7 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
     return function (options) {
         var jqGridInvoice = {
             dbGrid: null,
+            detailGrid: null,
             // опции
             options: $.extend({
                 baseAddress: null
@@ -51,7 +52,7 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                             search: true, // разрешён поиск
                             edittype: "text", // тип поля ввода
                             align: "right", // выравнено по правому краю
-                            formatter: jqGridInvoice._dateTimeFormatter,//'date', // отформатировано как дата
+                            formatter: jqGridInvoice._dateTimeFormatter, // отформатировано как дата
                             sorttype: 'date', // сортируем как дату
                             formatoptions: {// формат даты
                                 srcformat: 'Y-m-d\TH:i:s',
@@ -163,7 +164,7 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                 return date.toLocaleString().replace(",", "");
             },
             // возвращает шаблон диалога редактирования
-            _getTemplate: function() {
+            _getTemplate: function () {
                 var template = "<div style='margin-left:15px;' id='dlgEditInvoice'>";
                 template += "<div>{CUSTOMER_ID} </div>";
                 template += "<div> Date: </div><div>{INVOICE_DATE}</div>";
@@ -184,142 +185,146 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
             _initPager: function () {
                 // отображение панели навигации
                 jqGridInvoice.dbGrid.jqGrid('navGrid', '#jqPagerInvoice',
-                        {
-                            search: true, // поиск
-                            add: true, // добавление
-                            edit: true, // редактирование
-                            del: true, // удаление
-                            view: false, // просмотр записи
-                            refresh: true, // обновление
+                    {
+                        search: true, // поиск
+                        add: true, // добавление
+                        edit: true, // редактирование
+                        del: true, // удаление
+                        view: false, // просмотр записи
+                        refresh: true, // обновление
 
-                            searchtext: "Поиск",
-                            addtext: "Добавить",
-                            edittext: "Изменить",
-                            deltext: "Удалить",
-                            viewtext: "Смотреть",
-                            viewtitle: "Выбранная запись",
-                            refreshtext: "Обновить"
-                        },
-                        // опции редактирования
-                        {
-                            url: jqGridInvoice.options.baseAddress + '/invoice/edit',
-                            reloadAfterSubmit: true,
-                            closeOnEscape: true,
-                            closeAfterEdit: true,
-                            drag: true,
-                            modal: true,
-                            top: $(".container.body-content").position().top + 150,
-                            left: $(".container.body-content").position().left + 150,
-                            template: jqGridInvoice._getTemplate(),
-                            afterSubmit: jqGridInvoice.afterSubmit,
-                            editData: {
-                                INVOICE_ID: function () {
-                                    var selectedRow = jqGridInvoice.dbGrid.getGridParam("selrow");
-                                    var value = jqGridInvoice.dbGrid.getCell(selectedRow, 'INVOICE_ID');
-                                    return value;
-                                },                                
-                                CUSTOMER_ID: function() {
-                                    return $('#dlgEditInvoice input[name=CUSTOMER_ID]').val();
-                                },
-                                INVOICE_DATE: function() {
-                                    var date = $('#dlgEditInvoice input[name=INVOICE_DATE]').val();
-                                    if (date) {
-                                        // дату надо преобразовать
-                                        var dateParts = date.split('.');                      
-                                        return dateParts[2].substring(0, 4) + '-' + dateParts[1] + '-' + dateParts[0] + 'T' + dateParts[2].substring(5);
+                        searchtext: "Поиск",
+                        addtext: "Добавить",
+                        edittext: "Изменить",
+                        deltext: "Удалить",
+                        viewtext: "Смотреть",
+                        viewtitle: "Выбранная запись",
+                        refreshtext: "Обновить"
+                    },
+                    // опции редактирования
+                    {
+                        url: jqGridInvoice.options.baseAddress + '/invoice/edit',
+                        reloadAfterSubmit: true,
+                        closeOnEscape: true,
+                        closeAfterEdit: true,
+                        drag: true,
+                        modal: true,
+                        top: $(".container.body-content").position().top + 150,
+                        left: $(".container.body-content").position().left + 150,
+                        template: jqGridInvoice._getTemplate(),
+                        afterSubmit: jqGridInvoice.afterSubmit,
+                        editData: {
+                            INVOICE_ID: function () {
+                                var selectedRow = jqGridInvoice.dbGrid.getGridParam("selrow");
+                                var value = jqGridInvoice.dbGrid.getCell(selectedRow, 'INVOICE_ID');
+                                return value;
+                            },
+                            CUSTOMER_ID: function () {
+                                return $('#dlgEditInvoice input[name=CUSTOMER_ID]').val();
+                            },
+                            INVOICE_DATE: function () {
+                                var datetime = $('#dlgEditInvoice input[name=INVOICE_DATE]').val();
+                                if (datetime) {
+                                    // дату надо преобразовать
+                                    var dateParts = datetime.split('.');
+                                    var date = dateParts[2].substring(0, 4) + '-' + dateParts[1] + '-' + dateParts[0];
+                                    var time = dateParts[2].substring(5);
+                                    if (!time) {
+                                        time = '00:00:00';
                                     }
-                                    else
-                                        return null;
-                                }
-                            }                            
-                        },
-                        // опции добавления
-                        {
-                            url: jqGridInvoice.options.baseAddress + '/invoice/create',
-                            reloadAfterSubmit: true,
-                            closeOnEscape: true,
-                            closeAfterAdd: true,
-                            drag: true,
-                            modal: true,
-                            top: $(".container.body-content").position().top + 150,
-                            left: $(".container.body-content").position().left + 150,
-                            template: jqGridInvoice._getTemplate(),
-                            afterSubmit: jqGridInvoice.afterSubmit,
-                            editData: {
-                                CUSTOMER_ID: function() {
-                                    return $('#dlgEditInvoice input[name=CUSTOMER_ID]').val();
-                                },
-                                INVOICE_DATE: function() {
-                                    var datetime = $('#dlgEditInvoice input[name=INVOICE_DATE]').val();
-                                    if (datetime) {
-                                        // дату надо преобразовать
-                                        var dateParts = datetime.split('.');          
-                                        var date = dateParts[2].substring(0, 4) + '-' + dateParts[1] + '-' + dateParts[0];
-                                        var time = dateParts[2].substring(5);
-                                        if (!time) {
-                                            time = '00:00:00';
-                                        }
-                                        return date + 'T' + time;
-                                    }
-                                    else
-                                        return null;
-                                }                                
+                                    return date + 'T' + time;
+                                } else
+                                    return null;
                             }
-                        },
-                        // опции удаления
-                        {
-                            url: jqGridInvoice.options.baseAddress + '/invoice/delete',
-                            reloadAfterSubmit: true,
-                            closeOnEscape: true,
-                            closeAfterDelete: true,
-                            drag: true,
-                            msg: "Удалить выделенную счёт-фактуру?",
-                            afterSubmit: jqGridInvoice.afterSubmit,
-                            delData: {
-                                INVOICE_ID: function () {
-                                    var selectedRow = jqGridInvoice.dbGrid.getGridParam("selrow");
-                                    var value = jqGridInvoice.dbGrid.getCell(selectedRow, 'INVOICE_ID');
-                                    return value;
-                                }
-                            }                            
-                        }                
+                        }
+                    },
+                    // опции добавления
+                    {
+                        url: jqGridInvoice.options.baseAddress + '/invoice/create',
+                        reloadAfterSubmit: true,
+                        closeOnEscape: true,
+                        closeAfterAdd: true,
+                        drag: true,
+                        modal: true,
+                        top: $(".container.body-content").position().top + 150,
+                        left: $(".container.body-content").position().left + 150,
+                        template: jqGridInvoice._getTemplate(),
+                        afterSubmit: jqGridInvoice.afterSubmit,
+                        editData: {
+                            CUSTOMER_ID: function () {
+                                return $('#dlgEditInvoice input[name=CUSTOMER_ID]').val();
+                            },
+                            INVOICE_DATE: function () {
+                                var datetime = $('#dlgEditInvoice input[name=INVOICE_DATE]').val();
+                                if (datetime) {
+                                    // дату надо преобразовать
+                                    var dateParts = datetime.split('.');
+                                    var date = dateParts[2].substring(0, 4) + '-' + dateParts[1] + '-' + dateParts[0];
+                                    var time = dateParts[2].substring(5);
+                                    if (!time) {
+                                        time = '00:00:00';
+                                    }
+                                    return date + 'T' + time;
+                                } else
+                                    return null;
+                            }
+                        }
+                    },
+                    // опции удаления
+                    {
+                        url: jqGridInvoice.options.baseAddress + '/invoice/delete',
+                        reloadAfterSubmit: true,
+                        closeOnEscape: true,
+                        closeAfterDelete: true,
+                        drag: true,
+                        msg: "Удалить выделенную счёт-фактуру?",
+                        afterSubmit: jqGridInvoice.afterSubmit,
+                        delData: {
+                            INVOICE_ID: function () {
+                                var selectedRow = jqGridInvoice.dbGrid.getGridParam("selrow");
+                                var value = jqGridInvoice.dbGrid.getCell(selectedRow, 'INVOICE_ID');
+                                return value;
+                            }
+                        }
+                    }
                 );
                 // добавление кнопки для оплаты счёт фактуры
                 var urlPay = jqGridInvoice.options.baseAddress + '/invoice/pay';
                 jqGridInvoice.dbGrid.navButtonAdd('#jqPagerInvoice',
-                        {
-                            buttonicon: "glyphicon-usd",
-                            title: "Оплатить",
-                            caption: "Оплатить",
-                            position: "last",
-                            onClickButton: function () {
-                                // получаем идентификатор текущей записи
-                                var id = jqGridInvoice.dbGrid.getGridParam("selrow");
-                                if (id) {
-                                    $.ajax({
-                                        url: urlPay,
-                                        type: 'POST',
-                                        data: {INVOICE_ID: id},
-                                        success: function (data) {
-                                            // проверяем не произошла ли ошибка
-                                            if (data.hasOwnProperty("error")) {
-                                                jqGridInvoice.alertDialog('Ошибка', data.error);
-                                            } else {
-                                                // обновление грида
-                                                $("#jqGridInvoice").jqGrid(
-                                                        'setGridParam',
-                                                        {
-                                                            datatype: 'json'
-                                                        }
-                                                ).trigger('reloadGrid');
-                                            }
+                    {
+                        buttonicon: "glyphicon-usd",
+                        title: "Оплатить",
+                        caption: "Оплатить",
+                        position: "last",
+                        onClickButton: function () {
+                            // получаем идентификатор текущей записи
+                            var id = jqGridInvoice.dbGrid.getGridParam("selrow");
+                            if (id) {
+                                $.ajax({
+                                    url: urlPay,
+                                    type: 'POST',
+                                    data: {INVOICE_ID: id},
+                                    success: function (data) {
+                                        // проверяем не произошла ли ошибка
+                                        if (data.hasOwnProperty("error")) {
+                                            jqGridInvoice.alertDialog('Ошибка', data.error);
+                                        } else {
+                                            // обновление грида
+                                            $("#jqGridInvoice").jqGrid(
+                                                    'setGridParam',
+                                                    {
+                                                        datatype: 'json'
+                                                    }
+                                            ).trigger('reloadGrid');
                                         }
-                                    });
-                                }
+                                    }
+                                });
                             }
-                        });
+                        }
+                    }
+                );
             },
-            init: function() {
+            init: function () {
                 jqGridInvoice._initGrid();
                 jqGridInvoice._initPager();
             },
@@ -333,26 +338,24 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                 } else {
                     // обновление грида
                     $(this).jqGrid(
-                       'setGridParam',
-                        {
-                            datatype: 'json'
-                        }
+                            'setGridParam',
+                            {
+                                datatype: 'json'
+                            }
                     ).trigger('reloadGrid');
                 }
                 return [true, "", 0];
-            },            
+            },
             // обработчик события раскрытия родительского грида
             // принимает два параметра идентификатор родительской записи
             // и первичный ключ записи
             showChildGrid: function (parentRowID, parentRowKey) {
                 var childGridID = parentRowID + "_table";
                 var childGridPagerID = parentRowID + "_pager";
-
                 // отправляем первичный ключ родительской записи
                 // чтобы отфильтровать записи позиций накладной
                 var childGridURL = jqGridInvoice.options.baseAddress + '/invoice/getdetaildata';
                 childGridURL = childGridURL + "?INVOICE_ID=" + encodeURIComponent(parentRowKey);
-
                 // добавляем HTML элементы для отображения таблицы и постраничной навигации
                 // как дочерние для выбранной строки в мастер гриде
                 $('<table>')
@@ -362,9 +365,8 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                         .attr('id', childGridPagerID)
                         .addClass('scroll')
                         .appendTo($('#' + parentRowID));
-
                 // создаём и инициализируем дочерний грид
-                var detailGrid = $("#" + childGridID).jqGrid({
+                jqGridInvoice.detailGrid = $("#" + childGridID).jqGrid({
                     url: childGridURL,
                     mtype: "GET",
                     datatype: "json",
@@ -480,20 +482,82 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                 });
                 // отображение панели инструментов
                 $("#" + childGridID).jqGrid('navGrid', '#' + childGridPagerID,
-                        {
-                            search: false, // поиск
-                            add: true, // добавление
-                            edit: true, // редактирование
-                            del: true, // удаление
-                            refresh: true // обновление
-                        },
-                        jqGridInvoice.updateDetail(detailGrid, "edit"), // обновление
-                        jqGridInvoice.updateDetail(detailGrid, "add"), // добавление
-                        jqGridInvoice.updateDetail(detailGrid, "del") // удаление
-                        );
+                    {
+                        search: false, // поиск
+                        add: true, // добавление
+                        edit: true, // редактирование
+                        del: true, // удаление
+                        refresh: true // обновление
+                    },
+                    // опции редактирования
+                    {
+                        url: jqGridInvoice.options.baseAddress + '/invoice/editdetail',
+                        reloadAfterSubmit: true,
+                        closeOnEscape: true,
+                        closeAfterEdit: true,
+                        drag: true,
+                        modal: true,
+                        top: $(".container.body-content").position().top + 150,
+                        left: $(".container.body-content").position().left + 150,
+                        template: jqGridInvoice._getTemplateDetail(),
+                        afterSubmit: jqGridInvoice.afterSubmit,
+                        editData: {
+                            INVOICE_LINE_ID: function () {
+                                var selectedRow = jqGridInvoice.detailGrid.getGridParam("selrow");
+                                var value = jqGridInvoice.detailGrid.getCell(selectedRow, 'INVOICE_LINE_ID');
+                                return value;
+                            },
+                            QUANTITY: function () {
+                                return $('#dlgEditInvoiceLine input[name=QUANTITY]').val();
+                            }   
+                        }
+                    },
+                    // опции добавления
+                    {
+                        url: jqGridInvoice.options.baseAddress + '/invoice/createdetail',
+                        reloadAfterSubmit: true,
+                        closeOnEscape: true,
+                        closeAfterAdd: true,
+                        drag: true,
+                        modal: true,
+                        top: $(".container.body-content").position().top + 150,
+                        left: $(".container.body-content").position().left + 150,
+                        template: jqGridInvoice._getTemplateDetail(),
+                        afterSubmit: jqGridInvoice.afterSubmit,
+                        editData: {
+                            INVOICE_ID: function () {
+                                var selectedRow = jqGridInvoice.dbGrid.getGridParam("selrow");
+                                var value = jqGridInvoice.dbGrid.getCell(selectedRow, 'INVOICE_ID');
+                                return value;
+                            },
+                            PRODUCT_ID: function () {
+                                return $('#dlgEditInvoiceLine input[name=PRODUCT_ID]').val();
+                            },
+                            QUANTITY: function () {
+                                return $('#dlgEditInvoiceLine input[name=QUANTITY]').val();
+                            }    
+                        }
+                    },
+                    // опции удаления
+                    {
+                        url: jqGridInvoice.options.baseAddress + '/invoice/deletedetail',
+                        reloadAfterSubmit: true,
+                        closeOnEscape: true,
+                        closeAfterDelete: true,
+                        drag: true,
+                        msg: "Удалить выделенную позицию?",
+                        afterSubmit: jqGridInvoice.afterSubmit,
+                        delData: {
+                            INVOICE_LINE_ID: function () {
+                                var selectedRow = jqGridInvoice.detailGrid.getGridParam("selrow");
+                                var value = jqGridInvoice.detailGrid.getCell(selectedRow, 'INVOICE_LINE_ID');
+                                return value;
+                            }
+                        }
+                    }
+                );
             },
-            updateDetail: function (detailGrid, act) {
-                // шаблон диалога редактирования
+            _getTemplateDetail: function () {
                 var template = "<div style='margin-left:15px;' id='dlgEditInvoiceLine'>";
                 template += "<div>{INVOICE_ID} </div>";
                 template += "<div>{PRODUCT_ID} </div>";
@@ -511,62 +575,7 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                 template += "<hr style='width: 100%;'/>";
                 template += "<div> {sData} {cData}  </div>";
                 template += "</div>";
-
-                var url = jqGridInvoice.options.baseAddress + '/invoice';
-
-                return {
-                    top: $(".container.body-content").position().top + 150,
-                    left: $(".container.body-content").position().left + 150,
-                    modal: true,
-                    drag: true,
-                    closeOnEscape: true,
-                    closeAfterAdd: true, // закрыть после добавления
-                    closeAfterEdit: true, // закрыть после редактирования
-                    reloadAfterSubmit: true, // обновление
-                    template: (act !== "del") ? template : null,
-                    onclickSubmit: function (params, postdata) {
-                        var selectedRow = detailGrid.getGridParam("selrow");
-                        switch (act) {
-                            case "add":
-                                params.url = url + '/createdetail';
-                                // получаем идентификатор счёт-фактуры
-                                postdata.INVOICE_ID = $('#dlgEditInvoiceLine input[name=INVOICE_ID]').val();
-                                // получаем идентификатор товара для текущей записи
-                                postdata.PRODUCT_ID = $('#dlgEditInvoiceLine input[name=PRODUCT_ID]').val();
-                                break;
-
-                            case "edit":
-                                params.url = url + '/editdetail';
-                                // получаем идентификатор текущей записи
-                                postdata.INVOICE_LINE_ID = selectedRow;
-                                break;
-
-                            case "del":
-                                params.url = url + '/deletedetail';
-                                // получаем идентификатор текущей записи
-                                postdata.INVOICE_LINE_ID = selectedRow;
-                                break;
-                        }
-                    },
-                    afterSubmit: function (response, postdata) {
-                        var responseData = response.responseJSON;
-                        // проверяем результат на наличие сообщений об ошибках
-                        if (responseData.hasOwnProperty("error")) {
-                            if (responseData.error.length) {
-                                return [false, responseData.error];
-                            }
-                        } else {
-                            // обновление грида
-                            $(this).jqGrid(
-                                    'setGridParam',
-                                    {
-                                        datatype: 'json'
-                                    }
-                            ).trigger('reloadGrid');
-                        }
-                        return [true, "", 0];
-                    }
-                };
+                return template;
             },
             // отображение окна выбора продукта из справочника
             showProductWindow: function () {
@@ -578,14 +587,12 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                         .css("z-index", '2000')
                         .addClass('modal')
                         .appendTo($('body'));
-
                 var dlgContent = $("<div>")
                         .addClass("modal-content")
                         .css('width', '760px')
                         .appendTo($('<div>')
                                 .addClass('modal-dialog')
                                 .appendTo(dlg));
-
                 var dlgHeader = $('<div>').addClass("modal-header").appendTo(dlgContent);
                 $("<button>")
                         .addClass("close")
@@ -595,11 +602,9 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                         .html("&times;")
                         .appendTo(dlgHeader);
                 $("<h5>").addClass("modal-title").html("Выбор заказчика").appendTo(dlgHeader);
-
                 var dlgBody = $('<div>')
                         .addClass("modal-body")
                         .appendTo(dlgContent);
-
                 var dlgFooter = $('<div>').addClass("modal-footer").appendTo(dlgContent);
                 $("<button>")
                         .attr('type', 'button')
@@ -608,13 +613,12 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                         .on('click', function () {
                             var rowId = $("#jqGridProduct").jqGrid("getGridParam", "selrow");
                             var row = $("#jqGridProduct").jqGrid("getRowData", rowId);
-
-                            $('#dlgEditInvoiceLine input[name=PRODUCT_ID]').val(rowId);
-                            $('#dlgEditInvoiceLine input[name=NAME]').val(row["NAME"]);
-                            $('#dlgEditInvoiceLine input[name=price]').val(row["PRICE"]);
-                            var price = $('#dlgEditInvoiceLine input[name=PRICE]').val() - 0;
+                            $('#dlgEditInvoiceLine input[name=PRODUCT_ID]').val(row["PRODUCT_ID"]);
+                            $('#dlgEditInvoiceLine input[name=PRODUCT_NAME]').val(row["NAME"]);
+                            $('#dlgEditInvoiceLine input[name=SALE_PRICE]').val(row["PRICE"]);
+                            var price = $('#dlgEditInvoiceLine input[name=SALE_PRICE]').val() - 0;
                             var quantity = $('#dlgEditInvoiceLine input[name=QUANTITY]').val() - 0;
-                            $('#dlgEditInvoiceLine input[name=TOTAL]').val(price * quantity);
+                            $('#dlgEditInvoiceLine input[name=TOTAL]').val(Math.round(price * quantity * 100) / 100);
                             dlg.modal('hide');
                         })
                         .appendTo(dlgFooter);
@@ -626,26 +630,22 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                             dlg.modal('hide');
                         })
                         .appendTo(dlgFooter);
-
                 $('<table>')
                         .attr('id', 'jqGridProduct')
                         .appendTo(dlgBody);
                 $('<div>')
                         .attr('id', 'jqPagerProduct')
                         .appendTo(dlgBody);
-
                 dlg.on('hidden.bs.modal', function () {
                     dlg.remove();
                 });
-
                 dlg.modal();
-
                 jqGridProductFactory({
                     baseAddress: jqGridInvoice.options.baseAddress
                 });
             },
             // отображение окна выбора заказчика из справочника
-            showCustomerWindow: function() {
+            showCustomerWindow: function () {
                 // основной блок диалога
                 var dlg = $('<div>')
                         .attr('id', 'dlgChooseCustomer')
@@ -655,7 +655,6 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                         .css("z-index", '2000')
                         .addClass('modal')
                         .appendTo($('body'));
-
                 // блок с содержимым диалога
                 var dlgContent = $("<div>")
                         .addClass("modal-content")
@@ -663,7 +662,6 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                         .appendTo($('<div>')
                                 .addClass('modal-dialog')
                                 .appendTo(dlg));
-
                 // блок с шапкой диалога
                 var dlgHeader = $('<div>').addClass("modal-header").appendTo(dlgContent);
                 // кнопка "X" для закрытия
@@ -676,12 +674,10 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                         .appendTo(dlgHeader);
                 // подпись
                 $("<h5>").addClass("modal-title").html("Выбор заказчика").appendTo(dlgHeader);
-
                 // тело диалога
                 var dlgBody = $('<div>')
                         .addClass("modal-body")
                         .appendTo(dlgContent);
-
                 // подвал диалога
                 var dlgFooter = $('<div>').addClass("modal-footer").appendTo(dlgContent);
                 // Кнопка "OK"
@@ -716,33 +712,28 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                 $('<div>')
                         .attr('id', 'jqPagerCustomer')
                         .appendTo(dlgBody);
-
                 dlg.on('hidden.bs.modal', function () {
                     dlg.remove();
                 });
-
                 // отображаем диалог
                 dlg.modal();
-                
                 jqGridCustomerFactory({
                     baseAddress: jqGridInvoice.options.baseAddress
-                });                
+                });
             },
             // Окно для отображения ошибки
-            alertDialog: function(title, error) {
+            alertDialog: function (title, error) {
                 var alertDlg = $('<div>')
                         .attr('aria-hidden', 'true')
                         .attr('role', 'dialog')
                         .attr('data-backdrop', 'static')
                         .addClass('modal')
                         .appendTo($('body'));
-
                 var dlgContent = $("<div>")
                         .addClass("modal-content")
                         .appendTo($('<div>')
                                 .addClass('modal-dialog')
                                 .appendTo(alertDlg));
-
                 var dlgHeader = $('<div>').addClass("modal-header").appendTo(dlgContent);
                 $("<button>")
                         .addClass("close")
@@ -752,17 +743,14 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                         .html("&times;")
                         .appendTo(dlgHeader);
                 $("<h5>").addClass("modal-title").html(title).appendTo(dlgHeader);
-
                 var dlgBody = $('<div>')
                         .addClass("modal-body")
                         .appendTo(dlgContent)
                         .append(error);
-
                 alertDlg.on('hidden.bs.modal', function () {
                     alertDlg.remove();
                 });
-
-                alertDlg.modal();                
+                alertDlg.modal();
             }
         };
         jqGridInvoice.init();
