@@ -111,6 +111,7 @@ public class InvoiceController {
             @RequestParam(value = "INVOICE_DATE", required = false, defaultValue = "") Timestamp invoiceDate) {
         Map<String, Object> map = new HashMap<>();
         try {
+//            log.info(invoiceDate.toString());
             invoiceManager.create(customerId, invoiceDate);
             map.put("success", true);
         } catch (Exception ex) {

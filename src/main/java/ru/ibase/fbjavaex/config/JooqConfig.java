@@ -1,8 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Конфигурация IoC контейнера
+ * для осуществления внедрения зависимостей.
  */
+
 package ru.ibase.fbjavaex.config;
 
 import org.springframework.context.annotation.Bean;
@@ -24,7 +24,9 @@ import ru.ibase.fbjavaex.exception.ExceptionTranslator;
 import ru.ibase.fbjavaex.managers.*;
 import ru.ibase.fbjavaex.jqgrid.*;
 
-
+/**
+ * Конфигурационный класс Spring IoC контейнера
+ */
 @Configuration
 public class JooqConfig {
 
@@ -32,11 +34,12 @@ public class JooqConfig {
     /**
      * Возвращает пул коннектов
      *
-     * @return javax.sql.DataSource
+     * @return 
      */
     @Bean(name = "dataSource")
     public DataSource getDataSource() {
         BasicDataSource dataSource = new BasicDataSource();
+        // определяем конфигурацию подключения
         dataSource.setUrl("jdbc:firebirdsql://localhost:3050/examples");
         dataSource.setDriverClassName("org.firebirdsql.jdbc.FBDriver");
         dataSource.setUsername("SYSDBA");
@@ -44,6 +47,11 @@ public class JooqConfig {
         return dataSource;
     }
 
+    /**
+     * Возращает менеджер транзакций
+     * 
+     * @return 
+     */
     @Bean(name = "transactionManager")
     public DataSourceTransactionManager getTransactionManager() {
         return new DataSourceTransactionManager(getDataSource());
@@ -54,11 +62,21 @@ public class JooqConfig {
         return new TransactionAwareDataSourceProxy(getDataSource());
     }
 
+    /**
+     * Возвращает провайдер подключений
+     * 
+     * @return 
+     */
     @Bean(name = "connectionProvider")
     public DataSourceConnectionProvider getConnectionProvider() {
         return new DataSourceConnectionProvider(getTransactionAwareDataSource());
     }
 
+    /**
+     * Возвращает транслятор исключений
+     * 
+     * @return 
+     */
     @Bean(name = "exceptionTranslator")
     public ExceptionTranslator getExceptionTranslator() {
         return new ExceptionTranslator();
@@ -67,11 +85,12 @@ public class JooqConfig {
     /**
      * Возвращает конфгурацию DSL контекста
      *
-     * @return org.jooq.Configuration
+     * @return 
      */
     @Bean(name = "dslConfig")
     public org.jooq.Configuration getDslConfig() {
         DefaultConfiguration config = new DefaultConfiguration();
+        // используем диалект SQL СУБД Firebird
         config.setSQLDialect(SQLDialect.FIREBIRD);
         config.setConnectionProvider(getConnectionProvider());
         DefaultExecuteListenerProvider listenerProvider = new DefaultExecuteListenerProvider(getExceptionTranslator());
@@ -80,9 +99,9 @@ public class JooqConfig {
     }
 
     /**
-     * Возвращает DSL котекст
+     * Возвращает DSL контекст
      *
-     * @return org.jooq.DSLContext
+     * @return 
      */
     @Bean(name = "dsl")
     public DSLContext getDsl() {
@@ -90,36 +109,71 @@ public class JooqConfig {
         return new DefaultDSLContext(config);
     }
 
+    /**
+     * Возвращает менеджер заказчиков
+     * 
+     * @return 
+     */
     @Bean(name = "customerManager")
     public CustomerManager getCustomerManager() {
         return new CustomerManager();
     }
 
+    /**
+     * Возвращает грид с заказчиками
+     * 
+     * @return 
+     */
     @Bean(name = "customerGrid")
     public JqGridCustomer getCustomerGrid() {
         return new JqGridCustomer();
     }
 
+    /**
+     * Возвращает менеджер продуктов
+     * 
+     * @return 
+     */
     @Bean(name = "productManager")
     public ProductManager getProductManager() {
         return new ProductManager();
     }
 
+    /**
+     * Возвращает грид с товарами
+     * 
+     * @return 
+     */
     @Bean(name = "productGrid")
     public JqGridProduct getProductGrid() {
         return new JqGridProduct();
     }
 
+    /**
+     * Возвращает менеджер счёт фактур
+     * 
+     * @return 
+     */
     @Bean(name = "invoiceManager")
     public InvoiceManager getInvoiceManager() {
         return new InvoiceManager();
     }
 
+    /**
+     * Возвращает грид с заголовками счёт фактур
+     * 
+     * @return 
+     */
     @Bean(name = "invoiceGrid")
     public JqGridInvoice getInvoiceGrid() {
         return new JqGridInvoice();
     }
 
+    /**
+     * Возаращет грид с позициями счёт фактуры
+     * 
+     * @return 
+     */
     @Bean(name = "invoiceLineGrid")
     public JqGridInvoiceLine getInvoiceLineGrid() {
         return new JqGridInvoiceLine();

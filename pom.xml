@@ -100,7 +100,7 @@
         <dependency>
             <groupId>org.firebirdsql.jdbc</groupId>
             <artifactId>jaybird-jdk18</artifactId>
-            <version>2.2.11</version>
+            <version>2.2.12</version>
         </dependency>  
         
         <!-- Пул коннектов -->  
@@ -116,19 +116,19 @@
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
-            <version>3.8.6</version>
+            <version>3.9.1</version>
         </dependency>
         
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq-meta</artifactId>
-            <version>3.8.6</version>
+            <version>3.9.1</version>
         </dependency>
         
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq-codegen</artifactId>
-            <version>3.8.6</version>
+            <version>3.9.1</version>
         </dependency>   
         
         <!-- Testing -->
