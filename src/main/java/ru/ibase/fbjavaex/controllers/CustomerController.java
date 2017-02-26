@@ -10,13 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import javax.ws.rs.core.MediaType;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ru.ibase.fbjavaex.managers.CustomerManager;
 
 import ru.ibase.fbjavaex.jqgrid.JqGridCustomer;
-
 import ru.ibase.fbjavaex.jqgrid.JqGridData;
 
 
@@ -38,18 +36,18 @@ public class CustomerController {
 
     /**
      * Действие по умолчанию
+     * Возвращает имя JSP страницы (представления) для отображения
      *
      * @param map
      * @return имя JSP шаблона
      */
     @RequestMapping(value = "/customer/", method = RequestMethod.GET)
     public String index(ModelMap map) {
-
         return "customer";
     }
 
     /**
-     * Вовзращает данные в формате JSON для jqGrid
+     * Возвращает данные в формате JSON для jqGrid
      *
      * @param rows количество строк на страницу
      * @param page номер страницы
@@ -66,16 +64,24 @@ public class CustomerController {
             produces = MediaType.APPLICATION_JSON)
     @ResponseBody
     public JqGridData getData(
+            // количество записей на странице
             @RequestParam(value = "rows", required = false, defaultValue = "20") int rows,
+            // номер текущей страницы
             @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            // поле для сортировки
             @RequestParam(value = "sidx", required = false, defaultValue = "") String sIdx,
+            // направление сортировки
             @RequestParam(value = "sord", required = false, defaultValue = "asc") String sOrd,
+            // осуществляется ли поиск
             @RequestParam(value = "_search", required = false, defaultValue = "false") Boolean search,
+            // поле поиска
             @RequestParam(value = "searchField", required = false, defaultValue = "") String searchField,
+            // значение поиска
             @RequestParam(value = "searchString", required = false, defaultValue = "") String searchString,
+            // операция поиска
             @RequestParam(value = "searchOper", required = false, defaultValue = "") String searchOper,
+            // фильтр
             @RequestParam(value="filters", required=false, defaultValue="") String filters) {
-
         customerGrid.setLimit(rows);
         customerGrid.setPageNo(page);
         customerGrid.setOrderBy(sIdx, sOrd);

@@ -37,7 +37,8 @@ public abstract class JqGrid {
     public abstract int getCountRecord();
 
     /**
-     *
+     * Возвращает структуру для сериализации в JSON
+     * 
      * @return
      */
     public JqGridData getJqGridData() {
@@ -55,7 +56,8 @@ public abstract class JqGrid {
 
 
     /**
-     *
+     * Возвращает количество записей на странице
+     * 
      * @return
      */
     public int getLimit() {
@@ -63,7 +65,8 @@ public abstract class JqGrid {
     }
 
     /**
-     *
+     * Возвращает смещение до извлечения первой записи
+     * 
      * @return
      */
     public int getOffset() {
@@ -71,7 +74,8 @@ public abstract class JqGrid {
     }
 
     /**
-     *
+     * Возвращает ия поля для сортировки
+     * 
      * @return
      */
     public String getIdx() {
@@ -79,7 +83,8 @@ public abstract class JqGrid {
     }
 
     /**
-     *
+     * Возвращает порядок сортировки
+     * 
      * @return
      */
     public String getOrd() {
@@ -87,7 +92,8 @@ public abstract class JqGrid {
     }
 
     /**
-     *
+     * Возвращает номер текущей страницы
+     * 
      * @return
      */
     public int getPageNo() {
@@ -95,13 +101,15 @@ public abstract class JqGrid {
     }
 
     /**
-     *
+     * Возвращает массив записей как список карт
+     * 
      * @return
      */
     public abstract List<Map<String, Object>> getRecords();
 
     /**
-     *
+     * Возвращает поле для поиска
+     * 
      * @return
      */
     public String getSearchField() {
@@ -109,7 +117,8 @@ public abstract class JqGrid {
     }
 
     /**
-     *
+     * Возвращает значение для поиска
+     * 
      * @return
      */
     public String getSearchString() {
@@ -117,7 +126,8 @@ public abstract class JqGrid {
     }
 
     /**
-     *
+     * Вовзаращет операцию поиска
+     * 
      * @return
      */
     public String getSearchOper() {
@@ -154,7 +164,8 @@ public abstract class JqGrid {
     }
 
     /**
-     *
+     * Устанавливает номер текущей страницы
+     * 
      * @param pageNo
      */
     public void setPageNo(int pageNo) {

@@ -3,7 +3,12 @@ package ru.ibase.fbjavaex.jqgrid;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * Класс описывающий структуру которая используется jqGrid
+ * Предназначен для сериализации в JSON
+ * 
+ * @author Simonov Denis
+ */
 public class JqGridData {
 
     /**
@@ -23,6 +28,14 @@ public class JqGridData {
      */
     private final List<Map<String, Object>> rows;
 
+    /**
+     * Конструктор
+     * 
+     * @param total
+     * @param page
+     * @param records
+     * @param rows 
+     */
     public JqGridData(int total, int page, int records, List<Map<String, Object>> rows) {
         this.total = total;
         this.page = page;
@@ -30,18 +43,39 @@ public class JqGridData {
         this.rows = rows;
     }
 
+    /**
+     * Возвращает общее количество страниц
+     * 
+     * @return 
+     */
     public int getTotal() {
         return total;
     }
 
+    /**
+     * Возращает текущую страницу
+     * 
+     * @return 
+     */
     public int getPage() {
         return page;
     }
 
+    /**
+     * Возвращает общее количество записей
+     * 
+     * @return 
+     */
     public int getRecords() {
         return records;
     }
 
+    /**
+     * Возвращает список карт
+     * Это массив данных для отображения в гриде
+     * 
+     * @return 
+     */
     public List<Map<String, Object>> getRows() {
         return rows;
     }

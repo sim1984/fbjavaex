@@ -16,6 +16,23 @@
     white-space: normal;
 }
 
+.ui-jqdialog.ui-jqgrid-bootstrap .ui-jqdialog-titlebar,
+.ui-jqgrid.ui-jqgrid-bootstrap .ui-jqgrid-caption {
+    background-color: #060d0f;
+}
+.ui-jqgrid.ui-jqgrid-bootstrap .ui-jqgrid-hdiv {
+    background-color: #cce0ff;
+}
+
+.modal-content {
+	border-color: #999999;
+}
+
+.ui-jqdialog.ui-jqgrid-bootstrap .ui-jqdialog-content {
+	background: none;
+}
+
+
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,

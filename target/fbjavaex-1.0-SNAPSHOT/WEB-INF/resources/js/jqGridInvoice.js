@@ -146,6 +146,8 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                     width: window.innerWidth - 80, // ширина грида
                     height: 500, // высота грида
                     viewrecords: true, // отображать количество записей
+		    guiStyle: "bootstrap",
+                    iconSet: "fontAwesome",                       
                     caption: "Invoices", // подпись к гриду
                     pager: '#jqPagerInvoice', // элемент для отображения постраничной навигации
                     subGrid: true, // показывать вложенвй грид
@@ -478,6 +480,8 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                     loadonce: false,
                     width: '100%',
                     height: '100%',
+                    guiStyle: "bootstrap",
+                    iconSet: "fontAwesome",   
                     pager: "#" + childGridPagerID
                 });
                 // отображение панели инструментов

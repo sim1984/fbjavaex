@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Пример Spring MVC приложения с использованием Firebird и jOOQ</title>
         
-        <!-- Скритпы и стили -->
+        <!-- Скрипты и стили -->
         <%@ include file="../jspf/head.jspf" %>
         <script src="${cp}/resources/js/jqGridCustomer.js"></script>   
     </head>

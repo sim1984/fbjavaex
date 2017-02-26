@@ -3,6 +3,9 @@ package ru.ibase.fbjavaex.managers;
 
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Isolation;
 
 import static ru.ibase.fbjavaex.exampledb.Tables.CUSTOMER;
 import static ru.ibase.fbjavaex.exampledb.Sequences.GEN_CUSTOMER_ID;
@@ -16,7 +19,7 @@ public class CustomerManager {
 
     @Autowired(required = true)
     private DSLContext dsl;
-
+    
     /**
      * Добавление заказчика
      * 
@@ -25,6 +28,7 @@ public class CustomerManager {
      * @param zipcode
      * @param phone 
      */
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)  
     public void create(String name, String address, String zipcode, String phone) {
         if (zipcode != null) {
             if (zipcode.trim().isEmpty()) {
@@ -33,7 +37,7 @@ public class CustomerManager {
         }        
         
         int customerId = this.dsl.nextval(GEN_CUSTOMER_ID).intValue();
-
+               
         this.dsl
                 .insertInto(CUSTOMER,
                         CUSTOMER.CUSTOMER_ID,
@@ -60,6 +64,7 @@ public class CustomerManager {
      * @param zipcode
      * @param phone 
      */
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)      
     public void edit(int customerId, String name, String address, String zipcode, String phone) {
 
         if (zipcode != null) {
@@ -67,7 +72,7 @@ public class CustomerManager {
                 zipcode = null;
             }
         }
-
+               
         this.dsl.update(CUSTOMER)
                 .set(CUSTOMER.NAME, name)
                 .set(CUSTOMER.ADDRESS, address)
@@ -82,6 +87,7 @@ public class CustomerManager {
      * 
      * @param customerId 
      */
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)    
     public void delete(int customerId) {
         this.dsl.deleteFrom(CUSTOMER)
                 .where(CUSTOMER.CUSTOMER_ID.eq(customerId))

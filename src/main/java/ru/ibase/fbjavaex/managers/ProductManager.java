@@ -4,6 +4,9 @@ package ru.ibase.fbjavaex.managers;
 import java.math.BigDecimal;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Isolation;
 
 import static ru.ibase.fbjavaex.exampledb.Tables.PRODUCT;
 import static ru.ibase.fbjavaex.exampledb.Sequences.GEN_PRODUCT_ID;
@@ -26,6 +29,7 @@ public class ProductManager {
      * @param price
      * @param description 
      */
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)      
     public void create(String name, BigDecimal price, String description) {
         
         int productId = this.dsl.nextval(GEN_PRODUCT_ID).intValue();
@@ -53,6 +57,7 @@ public class ProductManager {
      * @param price
      * @param description 
      */
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)      
     public void edit(int productId, String name, BigDecimal price, String description) {
         this.dsl.update(PRODUCT)
                 .set(PRODUCT.NAME, name)
@@ -67,6 +72,7 @@ public class ProductManager {
      * 
      * @param productId 
      */
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)      
     public void delete(int productId) {
         this.dsl.deleteFrom(PRODUCT)
                 .where(PRODUCT.PRODUCT_ID.eq(productId))

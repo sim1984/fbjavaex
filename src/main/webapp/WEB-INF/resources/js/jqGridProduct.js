@@ -65,9 +65,11 @@ var JqGridProduct = (function ($) {
                     loadonce: false, // загрузка только один раз
                     sortname: 'NAME', // сортировка по умолчанию по столбцу NAME
                     sortorder: "asc", // порядок сортировки
-                    width: window.innerWidth - 40, // ширина грида
+                    width: window.innerWidth - 80, // ширина грида
                     height: 500, // высота грида
                     viewrecords: true, // отображать количество записей
+		    guiStyle: "bootstrap",
+                    iconSet: "fontAwesome",                     
                     caption: "Products", // подпись к гриду
                     // элемент для отображения навигации
                     pager: 'jqPagerProduct'
