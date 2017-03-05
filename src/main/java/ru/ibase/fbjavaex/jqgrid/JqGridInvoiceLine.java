@@ -1,7 +1,6 @@
 
 package ru.ibase.fbjavaex.jqgrid;
 
-import java.sql.*;
 import org.jooq.*;
 
 import java.util.List;
@@ -9,8 +8,6 @@ import java.util.Map;
 
 import static ru.ibase.fbjavaex.exampledb.Tables.INVOICE_LINE;
 import static ru.ibase.fbjavaex.exampledb.Tables.PRODUCT;
-
-
 
 /**
  * Обработчик грида для позиций журнала счёт-фактур
@@ -50,7 +47,8 @@ public class JqGridInvoiceLine extends JqGrid {
     
        
     /**
-     *
+     * Возвращает позиции накладной
+     * 
      * @return
      */
     @Override

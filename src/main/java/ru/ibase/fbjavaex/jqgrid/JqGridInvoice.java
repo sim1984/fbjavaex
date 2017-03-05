@@ -81,7 +81,7 @@ public class JqGridInvoice extends JqGrid {
         SelectFinalStep<?> select
                 = dsl.selectCount()
                         .from(INVOICE)
-                        .where(INVOICE.INVOICE_DATE.between(workingPeriod.getBeginDate(), workingPeriod.getEndDate()));
+                        .where(INVOICE.INVOICE_DATE.between(this.workingPeriod.getBeginDate(), this.workingPeriod.getEndDate()));
 
         SelectQuery<?> query = select.getQuery();
 
@@ -111,7 +111,7 @@ public class JqGridInvoice extends JqGrid {
                         INVOICE.TOTAL_SALE)
                         .from(INVOICE)
                         .innerJoin(CUSTOMER).on(CUSTOMER.CUSTOMER_ID.eq(INVOICE.CUSTOMER_ID))
-                        .where(INVOICE.INVOICE_DATE.between(workingPeriod.getBeginDate(), workingPeriod.getEndDate()));
+                        .where(INVOICE.INVOICE_DATE.between(this.workingPeriod.getBeginDate(), this.workingPeriod.getEndDate()));
 
         SelectQuery<?> query = select.getQuery();
 
