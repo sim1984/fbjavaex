@@ -5,6 +5,8 @@ import org.jooq.*;
 
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import ru.ibase.fbjavaex.config.WorkingPeriod;
 
 import static ru.ibase.fbjavaex.exampledb.Tables.INVOICE;
 import static ru.ibase.fbjavaex.exampledb.Tables.CUSTOMER;
@@ -15,6 +17,9 @@ import static ru.ibase.fbjavaex.exampledb.Tables.CUSTOMER;
  * @author Simonov Denis
  */
 public class JqGridInvoice extends JqGrid {
+    
+    @Autowired(required = true)
+    private WorkingPeriod workingPeriod;    
 
     /**
      * Добавление условия поиска
@@ -76,7 +81,7 @@ public class JqGridInvoice extends JqGrid {
         SelectFinalStep<?> select
                 = dsl.selectCount()
                         .from(INVOICE)
-                        .where(INVOICE.INVOICE_DATE.between(Timestamp.valueOf("2015-06-01 00:00:00"), Timestamp.valueOf("2015-09-01 00:00:00")));
+                        .where(INVOICE.INVOICE_DATE.between(workingPeriod.getBeginDate(), workingPeriod.getEndDate()));
 
         SelectQuery<?> query = select.getQuery();
 
@@ -90,7 +95,8 @@ public class JqGridInvoice extends JqGrid {
 
 
     /**
-     *
+     * Возвращает список счёт-фактур
+     * 
      * @return
      */
     @Override
@@ -105,7 +111,7 @@ public class JqGridInvoice extends JqGrid {
                         INVOICE.TOTAL_SALE)
                         .from(INVOICE)
                         .innerJoin(CUSTOMER).on(CUSTOMER.CUSTOMER_ID.eq(INVOICE.CUSTOMER_ID))
-                        .where(INVOICE.INVOICE_DATE.between(Timestamp.valueOf("2015-06-01 00:00:00"), Timestamp.valueOf("2015-09-01 00:00:00")));
+                        .where(INVOICE.INVOICE_DATE.between(workingPeriod.getBeginDate(), workingPeriod.getEndDate()));
 
         SelectQuery<?> query = select.getQuery();
 

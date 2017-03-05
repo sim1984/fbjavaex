@@ -1,6 +1,7 @@
 ru\ibase\fbjavaex\exampledb\routines\SpEditInvoiceLine.class
 ru\ibase\fbjavaex\exampledb\Keys.class
 ru\ibase\fbjavaex\config\WebAppConfig.class
+ru\ibase\fbjavaex\config\WorkingPeriod.class
 ru\ibase\fbjavaex\jqgrid\JqGridInvoice.class
 ru\ibase\fbjavaex\managers\InvoiceManager.class
 ru\ibase\fbjavaex\exampledb\tables\Customer.class

@@ -2,7 +2,6 @@
  * Конфигурация IoC контейнера
  * для осуществления внедрения зависимостей.
  */
-
 package ru.ibase.fbjavaex.config;
 
 import org.springframework.context.annotation.Bean;
@@ -30,11 +29,10 @@ import ru.ibase.fbjavaex.jqgrid.*;
 @Configuration
 public class JooqConfig {
 
-
     /**
      * Возвращает пул коннектов
      *
-     * @return 
+     * @return
      */
     @Bean(name = "dataSource")
     public DataSource getDataSource() {
@@ -49,8 +47,8 @@ public class JooqConfig {
 
     /**
      * Возращает менеджер транзакций
-     * 
-     * @return 
+     *
+     * @return
      */
     @Bean(name = "transactionManager")
     public DataSourceTransactionManager getTransactionManager() {
@@ -64,8 +62,8 @@ public class JooqConfig {
 
     /**
      * Возвращает провайдер подключений
-     * 
-     * @return 
+     *
+     * @return
      */
     @Bean(name = "connectionProvider")
     public DataSourceConnectionProvider getConnectionProvider() {
@@ -74,8 +72,8 @@ public class JooqConfig {
 
     /**
      * Возвращает транслятор исключений
-     * 
-     * @return 
+     *
+     * @return
      */
     @Bean(name = "exceptionTranslator")
     public ExceptionTranslator getExceptionTranslator() {
@@ -85,7 +83,7 @@ public class JooqConfig {
     /**
      * Возвращает конфгурацию DSL контекста
      *
-     * @return 
+     * @return
      */
     @Bean(name = "dslConfig")
     public org.jooq.Configuration getDslConfig() {
@@ -101,7 +99,7 @@ public class JooqConfig {
     /**
      * Возвращает DSL контекст
      *
-     * @return 
+     * @return
      */
     @Bean(name = "dsl")
     public DSLContext getDsl() {
@@ -111,8 +109,8 @@ public class JooqConfig {
 
     /**
      * Возвращает менеджер заказчиков
-     * 
-     * @return 
+     *
+     * @return
      */
     @Bean(name = "customerManager")
     public CustomerManager getCustomerManager() {
@@ -121,8 +119,8 @@ public class JooqConfig {
 
     /**
      * Возвращает грид с заказчиками
-     * 
-     * @return 
+     *
+     * @return
      */
     @Bean(name = "customerGrid")
     public JqGridCustomer getCustomerGrid() {
@@ -131,8 +129,8 @@ public class JooqConfig {
 
     /**
      * Возвращает менеджер продуктов
-     * 
-     * @return 
+     *
+     * @return
      */
     @Bean(name = "productManager")
     public ProductManager getProductManager() {
@@ -141,8 +139,8 @@ public class JooqConfig {
 
     /**
      * Возвращает грид с товарами
-     * 
-     * @return 
+     *
+     * @return
      */
     @Bean(name = "productGrid")
     public JqGridProduct getProductGrid() {
@@ -151,8 +149,8 @@ public class JooqConfig {
 
     /**
      * Возвращает менеджер счёт фактур
-     * 
-     * @return 
+     *
+     * @return
      */
     @Bean(name = "invoiceManager")
     public InvoiceManager getInvoiceManager() {
@@ -161,8 +159,8 @@ public class JooqConfig {
 
     /**
      * Возвращает грид с заголовками счёт фактур
-     * 
-     * @return 
+     *
+     * @return
      */
     @Bean(name = "invoiceGrid")
     public JqGridInvoice getInvoiceGrid() {
@@ -170,13 +168,23 @@ public class JooqConfig {
     }
 
     /**
-     * Возаращет грид с позициями счёт фактуры
-     * 
-     * @return 
+     * Возвращет грид с позициями счёт фактуры
+     *
+     * @return
      */
     @Bean(name = "invoiceLineGrid")
     public JqGridInvoiceLine getInvoiceLineGrid() {
         return new JqGridInvoiceLine();
+    }
+
+    /**
+     * Возващает рабочий период
+     * 
+     * @return 
+     */
+    @Bean(name = "workingPeriod")
+    public WorkingPeriod getWorkingPeriod() {
+        return new WorkingPeriod();
     }
 
 }

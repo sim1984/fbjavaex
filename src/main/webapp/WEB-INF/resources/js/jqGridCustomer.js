@@ -64,7 +64,7 @@ var JqGridCustomer = (function ($) {
                 ];
             },
             // инициализация грида
-            _initGrid: function () {
+            initGrid: function () {
                 // url для получения данных
                 var url = jqGridCustomer.options.baseAddress + '/customer/getdata';
                 jqGridCustomer.dbGrid = $("#jqGridCustomer").jqGrid({
@@ -141,7 +141,7 @@ var JqGridCustomer = (function ($) {
                 };
             },
             // инициализация панели навигации вместе с диалогами редактирования
-            _initPagerWithEditors: function () {
+            initPagerWithEditors: function () {
                 jqGridCustomer.dbGrid.jqGrid('navGrid', '#jqPagerCustomer',
                         {
                             // кнопки
@@ -166,7 +166,7 @@ var JqGridCustomer = (function ($) {
                         );
             },
             // инициализация панели навигации вместе без диалогов редактирования
-            _initPagerWithoutEditors: function () {
+            initPagerWithoutEditors: function () {
                 jqGridCustomer.dbGrid.jqGrid('navGrid', '#jqPagerCustomer',
                         {
                             // кнопки
@@ -185,17 +185,17 @@ var JqGridCustomer = (function ($) {
                 );
             },
             // инициализация панели навигации
-            _initPager: function () {
+            initPager: function () {
                 if (jqGridCustomer.options.showEditorPanel) {
-                    jqGridCustomer._initPagerWithEditors();
+                    jqGridCustomer.initPagerWithEditors();
                 } else {
-                    jqGridCustomer._initPagerWithoutEditors();
+                    jqGridCustomer.initPagerWithoutEditors();
                 }
             },
             // инициализация
             init: function () {
-                jqGridCustomer._initGrid();
-                jqGridCustomer._initPager();
+                jqGridCustomer.initGrid();
+                jqGridCustomer.initPager();
             },
             // обработчик результатов обработки форм (операций)
             afterSubmit: function (response, postdata) {
