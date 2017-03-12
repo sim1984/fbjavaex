@@ -48,9 +48,9 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                         align: "right", // выравнено по правому краю
                         formatter: jqGridInvoice.dateTimeFormatter, // отформатировано как дата
                         sorttype: 'date', // сортируем как дату
-                        formatoptions: {// формат даты
-                            srcformat: 'Y-m-d\TH:i:s',
-                            newformat: 'd.m.Y H:i:s'
+                        formatoptions: {
+                            srcformat: 'Y-m-d\TH:i:s', // входной формат
+                            newformat: 'd.m.Y H:i:s'   // выходной формат
                         },
                         editoptions: {
                             // иницивлизация элемента формы для редактирования
@@ -165,7 +165,8 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                     }
                 });
             },
-            dateTimeFormatter(cellvalue, options, rowObject) {
+            // функция форматирования даты
+            dateTimeFormatter: function(cellvalue, options, rowObject) {
                 var date = new Date(cellvalue);
                 return date.toLocaleString().replace(",", "");
             },
@@ -188,7 +189,8 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                 template += "</div>";
                 return template;
             },
-            convertToUTC(datetime) {
+            // преобразование даты в UTC
+            convertToUTC: function(datetime) {
                 if (datetime) {
                     // дату надо преобразовать
                     var dateParts = datetime.split('.');
@@ -378,7 +380,7 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                         edittype: 'custom',
                         editoptions: {
                             custom_element: function (value, options) {
-                                // создаём скрытый эелемент ввода
+                                // создаём скрытый элемент ввода
                                 return $("<input>")
                                         .attr('type', 'hidden')
                                         .attr('rowid', options.rowId)
@@ -398,7 +400,7 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                         edittype: 'custom',
                         editoptions: {
                             custom_element: function (value, options) {
-                                // создаём скрытый эелемент ввода
+                                // создаём скрытый элемент ввода
                                 return $("<input>")
                                         .attr('type', 'hidden')
                                         .attr('rowid', options.rowId)
@@ -586,6 +588,7 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                         jqGridInvoice.getDeleteInvoiceLineOptions()
                         );
             },
+            // возвращает шаблон для редактора позиции счёт фактуры
             getTemplateDetail: function () {
                 var template = "<div style='margin-left:15px;' id='dlgEditInvoiceLine'>";
                 template += "<div>{INVOICE_ID} </div>";
@@ -737,7 +740,7 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                 $('<table>')
                         .attr('id', 'jqGridCustomer')
                         .appendTo(dlgBody);
-                // добавляем паенль навигации
+                // добавляем панель навигации
                 $('<div>')
                         .attr('id', 'jqPagerCustomer')
                         .appendTo(dlgBody);
@@ -772,7 +775,7 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                         .html("&times;")
                         .appendTo(dlgHeader);
                 $("<h5>").addClass("modal-title").html(title).appendTo(dlgHeader);
-                var dlgBody = $('<div>')
+                $('<div>')
                         .addClass("modal-body")
                         .appendTo(dlgContent)
                         .append(error);

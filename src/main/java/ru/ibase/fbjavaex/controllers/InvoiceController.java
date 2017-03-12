@@ -47,6 +47,8 @@ public class InvoiceController {
     private InvoiceManager invoiceManager;
 
     /**
+     * Описываем, как преобразуется строка в дату
+     * из входных параметров HTTP запроса
      * 
      * @param binder 
      */
@@ -70,12 +72,33 @@ public class InvoiceController {
         });
     }
 
+    /**
+     * Действие по умолчанию
+     * Возвращает имя JSP страницы (представления) для отображения
+     * 
+     * @param map
+     * @return имя JSP страницы
+     */
     @RequestMapping(value = "/invoice/", method = RequestMethod.GET)
     public String index(ModelMap map) {
 
         return "invoice";
     }
 
+    /**
+     * Возвращает список счёт фактур в формате JSON для jqGrid
+     * 
+     * @param rows количество записей на странице
+     * @param page номер текущей страницы
+     * @param sIdx поле сортировки
+     * @param sOrd порядок сортировки
+     * @param search флаг поиска
+     * @param searchField поле поиска
+     * @param searchString значение поиска
+     * @param searchOper операция сравнения
+     * @param filters фильтр
+     * @return 
+     */
     @RequestMapping(value = "/invoice/getdata",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON)
@@ -102,6 +125,13 @@ public class InvoiceController {
         return invoiceGrid.getJqGridData();
     }
 
+    /**
+     * Добавляет счёт фактуру
+     * 
+     * @param customerId код заказчика
+     * @param invoiceDate дата счёт фактуры
+     * @return 
+     */
     @RequestMapping(value = "/invoice/create",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON)
@@ -120,6 +150,14 @@ public class InvoiceController {
         return map;
     }
 
+    /**
+     * Редактирует счёт фактуру
+     * 
+     * @param invoiceId код счёт фактуры
+     * @param customerId код заказчика
+     * @param invoiceDate дата счёт фактуры
+     * @return 
+     */
     @RequestMapping(value = "/invoice/edit",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON)
@@ -138,6 +176,12 @@ public class InvoiceController {
         return map;
     }
 
+    /**
+     * Оплачивает счёт фактуру
+     * 
+     * @param invoiceId код счёт фактуры
+     * @return 
+     */
     @RequestMapping(value = "/invoice/pay",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON)
@@ -154,6 +198,12 @@ public class InvoiceController {
         return map;
     }
 
+    /**
+     * Удаляет счёт фактуру
+     * 
+     * @param invoiceId код счёт фактуры
+     * @return 
+     */
     @RequestMapping(value = "/invoice/delete",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON)
@@ -170,6 +220,12 @@ public class InvoiceController {
         return map;
     }
 
+    /**
+     * Возвращает список позиций счёт фактуры
+     * 
+     * @param invoice_id код счёт фактуры
+     * @return 
+     */
     @RequestMapping(value = "/invoice/getdetaildata",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON)
@@ -183,6 +239,14 @@ public class InvoiceController {
 
     }
 
+    /**
+     * Добавляет позицию счёт фактуры
+     * 
+     * @param invoiceId код счёт фактуры
+     * @param productId код товара
+     * @param quantity количество товара
+     * @return 
+     */
     @RequestMapping(value = "/invoice/createdetail",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON)
@@ -201,6 +265,13 @@ public class InvoiceController {
         return map;
     }
 
+    /**
+     * Редактирует позицию счёт фактуры
+     * 
+     * @param invoiceLineId код позици счёт фактуры
+     * @param quantity количество товара
+     * @return 
+     */
     @RequestMapping(value = "/invoice/editdetail",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON)
@@ -218,6 +289,12 @@ public class InvoiceController {
         return map;
     }
 
+    /**
+     * Удаляет позицию счёт фактуры
+     * 
+     * @param invoiceLineId код позиции счёт фактуры
+     * @return 
+     */
     @RequestMapping(value = "/invoice/deletedetail",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON)
