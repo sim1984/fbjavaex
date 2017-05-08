@@ -42,6 +42,7 @@ public class JooqConfig {
         dataSource.setDriverClassName("org.firebirdsql.jdbc.FBDriver");
         dataSource.setUsername("SYSDBA");
         dataSource.setPassword("masterkey");
+        dataSource.setConnectionProperties("charSet=utf-8");
         return dataSource;
     }
 
