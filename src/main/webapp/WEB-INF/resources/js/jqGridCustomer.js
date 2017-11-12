@@ -12,33 +12,35 @@ var JqGridCustomer = (function ($) {
             getColModel: function () {
                 return [
                     {
-                        label: 'Id', // подпись
-                        name: 'CUSTOMER_ID', // имя поля
-                        key: true, // признак ключевого поля
-                        hidden: true          // скрыт 
+                        label: 'Id', 
+                        name: 'CUSTOMER_ID', // field name
+                        key: true, 
+                        hidden: true           
                     },
                     {
-                        label: 'Name', // подпись поля
-                        name: 'NAME', // имя поля
-                        width: 240, // ширина
-                        sortable: true, // разрешена сортировка
-                        editable: true, // разрешено редактирование
-                        edittype: "text", // тип поля в редакторе
-                        search: true, // разрешён поиск
+                        label: 'Name', 
+                        name: 'NAME', 
+                        width: 240, 
+                        sortable: true, 
+                        editable: true,
+                        edittype: "text", // input field type in the editor
+                        search: true, 
                         searchoptions: {
-                            sopt: ['eq', 'bw', 'cn'] // разрешённые операторы поиска
+                            // allowed search operators
+                            sopt: ['eq', 'bw', 'cn'] 
                         },
-                        editoptions: {size: 30, maxlength: 60}, // размер и максимальная длина для поля ввода
-                        editrules: {required: true}             // говорит о том что поле обязательное
+                        // // size and maximum length for the input field
+                        editoptions: {size: 30, maxlength: 60}, 
+                        editrules: {required: true}            
                     },
                     {
                         label: 'Address',
                         name: 'ADDRESS',
                         width: 300,
-                        sortable: false, // запрещаем сортировку
-                        editable: true, // редактируемое
-                        search: false, // запрещаем поиск
-                        edittype: "textarea", // мемо поле
+                        sortable: false, // prohibit sorting
+                        editable: true, 
+                        search: false, // prohibit search
+                        edittype: "textarea", // memo field
                         editoptions: {maxlength: 250, cols: 30, rows: 4}
                     },
                     {
@@ -63,26 +65,26 @@ var JqGridCustomer = (function ($) {
                     }
                 ];
             },
-            // инициализация грида
+            // grid initialization
             initGrid: function () {
-                // url для получения данных
+                // url to retrieve data
                 var url = jqGridCustomer.options.baseAddress + '/customer/getdata';
                 jqGridCustomer.dbGrid = $("#jqGridCustomer").jqGrid({
                     url: url,
-                    datatype: "json", // формат получения данных 
-                    mtype: "GET", // тип http запроса
+                    datatype: "json", // data format
+                    mtype: "GET", // request type
                     colModel: jqGridCustomer.getColModel(),
-                    rowNum: 500, // число отображаемых строк
-                    loadonce: false, // загрузка только один раз
-                    sortname: 'NAME', // сортировка по умолчанию по столбцу NAME
-                    sortorder: "asc", // порядок сортировки
-                    width: window.innerWidth - 80, // ширина грида
-                    height: 500, // высота грида
-                    viewrecords: true, // отображать количество записей
+                    rowNum: 500, // number of rows displayed
+                    loadonce: false, // load only once
+                    sortname: 'NAME', // Sorting by NAME by default
+                    sortorder: "asc", 
+                    width: window.innerWidth - 80, 
+                    height: 500, 
+                    viewrecords: true, // display the number of records
                     guiStyle: "bootstrap",
                     iconSet: "fontAwesome",
-                    caption: "Customers", // подпись к гриду
-                    // элемент для отображения навигации
+                    caption: "Customers", 
+                    // navigation item
                     pager: 'jqPagerCustomer'
                 });
             },
@@ -144,21 +146,21 @@ var JqGridCustomer = (function ($) {
             initPagerWithEditors: function () {
                 jqGridCustomer.dbGrid.jqGrid('navGrid', '#jqPagerCustomer',
                         {
-                            // кнопки
-                            search: true, // поиск
-                            add: true, // добавление
-                            edit: true, // редактирование
-                            del: true, // удаление
-                            view: true, // просмотр записи
-                            refresh: true, // обновление
+                            // buttons
+                            search: true, 
+                            add: true, 
+                            edit: true, 
+                            del: true, 
+                            view: true, 
+                            refresh: true, 
                             // подписи кнопок
-                            searchtext: "Поиск",
-                            addtext: "Добавить",
-                            edittext: "Изменить",
-                            deltext: "Удалить",
-                            viewtext: "Смотреть",
-                            viewtitle: "Выбранная запись",
-                            refreshtext: "Обновить"
+                            searchtext: "Search",
+                            addtext: "Add",
+                            edittext: "Edit",
+                            deltext: "Delete",
+                            viewtext: "View",
+                            viewtitle: "Selected record",
+                            refreshtext: "Refresh"
                         },
                         jqGridCustomer.getEditOptions(),
                         jqGridCustomer.getAddOptions(),
@@ -170,17 +172,17 @@ var JqGridCustomer = (function ($) {
                 jqGridCustomer.dbGrid.jqGrid('navGrid', '#jqPagerCustomer',
                         {
                             // кнопки
-                            search: true, // поиск
-                            add: false, // добавление
-                            edit: false, // редактирование
-                            del: false, // удаление
-                            view: false, // просмотр записи
-                            refresh: true, // обновление
+                            search: true, 
+                            add: false,
+                            edit: false, 
+                            del: false, 
+                            view: false,
+                            refresh: true, 
                             // подписи кнопок
-                            searchtext: "Поиск",
-                            viewtext: "Смотреть",
-                            viewtitle: "Выбранная запись",
-                            refreshtext: "Обновить"
+                            searchtext: "Search",
+                            viewtext: "View",
+                            viewtitle: "Selected record",
+                            refreshtext: "Refresh"
                         }
                 );
             },
