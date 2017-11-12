@@ -1,4 +1,4 @@
-<%-- Навигационное меню --%>
+<%-- Navigation menu --%>
 <c:set var="cp" value="${pageContext.request.servletContext.contextPath}" scope="request" />
 
 <%@ page pageEncoding="UTF-8" %>
