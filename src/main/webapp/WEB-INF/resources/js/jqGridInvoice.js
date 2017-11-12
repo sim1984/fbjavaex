@@ -180,7 +180,7 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                 template += "<div>";
                 template += "<div style='float: left;'>{CUSTOMER_NAME}</div> ";
                 template += "<a style='margin-left: 0.2em;' class='btn' onclick='invoiceGrid.showCustomerWindow(); return false;'>";
-                template += "<span class='glyphicon glyphicon-folder-open'></span>Выбрать</a> ";
+                template += "<span class='glyphicon glyphicon-folder-open'></span>Select</a> ";
                 template += "<div style='clear: both;'></div>";
                 template += "</div>";
                 template += "<div> {PAID} Paid </div>";
@@ -293,13 +293,13 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                             view: false, // просмотр записи
                             refresh: true, // обновление
 
-                            searchtext: "Поиск",
-                            addtext: "Добавить",
-                            edittext: "Изменить",
-                            deltext: "Удалить",
-                            viewtext: "Смотреть",
-                            viewtitle: "Выбранная запись",
-                            refreshtext: "Обновить"
+                            searchtext: "Search",
+                            addtext: "Add",
+                            edittext: "Edit",
+                            deltext: "Delete",
+                            viewtext: "View",
+                            viewtitle: "Selected record",
+                            refreshtext: "Refresh"
                         },
                         jqGridInvoice.getEditInvoiceOptions(),
                         jqGridInvoice.getAddInvoiceOptions(),
@@ -310,8 +310,8 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                 jqGridInvoice.dbGrid.navButtonAdd('#jqPagerInvoice',
                         {
                             buttonicon: "glyphicon-usd",
-                            title: "Оплатить",
-                            caption: "Оплатить",
+                            title: "Pay",
+                            caption: "Pay",
                             position: "last",
                             onClickButton: function () {
                                 // получаем идентификатор текущей записи
@@ -598,7 +598,7 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                 template += "<div>";
                 template += "<div style='float: left;'>{PRODUCT_NAME}</div> ";
                 template += "<a style='margin-left: 0.2em;' class='btn' onclick='invoiceGrid.showProductWindow(); return false;'>";
-                template += "<span class='glyphicon glyphicon-folder-open'></span> Выбрать</a> ";
+                template += "<span class='glyphicon glyphicon-folder-open'></span> Select</a> ";
                 template += "<div style='clear: both;'></div>";
                 template += "</div>";
                 template += "<div> Quantity: </div><div>{QUANTITY} </div>";
@@ -633,7 +633,7 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                         .attr('data-dismiss', 'modal')
                         .html("&times;")
                         .appendTo(dlgHeader);
-                $("<h5>").addClass("modal-title").html("Выбор заказчика").appendTo(dlgHeader);
+                $("<h5>").addClass("modal-title").html("Select product").appendTo(dlgHeader);
                 var dlgBody = $('<div>')
                         .addClass("modal-body")
                         .appendTo(dlgContent);
@@ -705,7 +705,7 @@ var JqGridInvoice = (function ($, jqGridProductFactory, jqGridCustomerFactory) {
                         .html("&times;")
                         .appendTo(dlgHeader);
                 // подпись
-                $("<h5>").addClass("modal-title").html("Выбор заказчика").appendTo(dlgHeader);
+                $("<h5>").addClass("modal-title").html("Select customer").appendTo(dlgHeader);
                 // тело диалога
                 var dlgBody = $('<div>')
                         .addClass("modal-body")
