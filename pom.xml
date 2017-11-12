@@ -15,7 +15,7 @@
         <spring.version>4.3.4.RELEASE</spring.version>
         <jstl.version>1.2</jstl.version>
         <javax.servlet.version>3.0.1</javax.servlet.version>    
-        <db.url>jdbc:firebirdsql://localhost:3050/examples</db.url>    
+        <db.url>jdbc:firebirdsql://localhost:3053/examples</db.url>    
         <db.driver>org.firebirdsql.jdbc.FBDriver</db.driver>
         <db.username>SYSDBA</db.username>
         <db.password>masterkey</db.password>
