@@ -128,20 +128,20 @@ var JqGridProduct = (function ($) {
             initPagerWithEditors: function () {
                 jqGridProduct.dbGrid.jqGrid('navGrid', '#jqPagerProduct',
                         {
-                            search: true, // поиск
-                            add: true, // добавление
-                            edit: true, // редактирование
-                            del: true, // удаление
-                            view: true, // просмотр записи
-                            refresh: true, // обновление
-                            // подписи кнопок
-                            searchtext: "Поиск",
-                            addtext: "Добавить",
-                            edittext: "Изменить",
-                            deltext: "Удалить",
-                            viewtext: "Смотреть",
-                            viewtitle: "Выбранная запись",
-                            refreshtext: "Обновить"
+                            search: true, 
+                            add: true, 
+                            edit: true, 
+                            del: true,
+                            view: true, 
+                            refresh: true, 
+                            // button captions
+                            searchtext: "Search",
+                            addtext: "Add",
+                            edittext: "Edit",
+                            deltext: "Delete",
+                            viewtext: "View",
+                            viewtitle: "Selected record",
+                            refreshtext: "Refresh"
                         },
                         jqGridProduct.getEditOptions(),
                         jqGridProduct.getAddOptions(),
@@ -151,17 +151,17 @@ var JqGridProduct = (function ($) {
             initPagerWithoutEditors: function () {
                 jqGridProduct.dbGrid.jqGrid('navGrid', '#jqPagerProduct',
                         {
-                            search: true, // поиск
-                            add: false, // добавление
-                            edit: false, // редактирование
-                            del: false, // удаление
-                            view: false, // просмотр записи
-                            refresh: true, // обновление
+                            search: true, 
+                            add: false, 
+                            edit: false, 
+                            del: false, 
+                            view: false, 
+                            refresh: true, 
 
-                            searchtext: "Поиск",
-                            viewtext: "Смотреть",
-                            viewtitle: "Выбранная запись",
-                            refreshtext: "Обновить"
+                            searchtext: "Search",
+                            viewtext: "View",
+                            viewtitle: "Selected record",
+                            refreshtext: "Refresh"
                         }
                 );
             },
