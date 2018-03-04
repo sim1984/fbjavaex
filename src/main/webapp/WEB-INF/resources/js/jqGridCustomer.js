@@ -3,12 +3,11 @@ var JqGridCustomer = (function ($) {
     return function (options) {
         var jqGridCustomer = {
             dbGrid: null,
-            // опции
             options: $.extend({
                 baseAddress: null,
                 showEditorPanel: true
             }, options),
-            // возвращает модель
+            // return customer model description
             getColModel: function () {
                 return [
                     {
@@ -73,6 +72,7 @@ var JqGridCustomer = (function ($) {
                     url: url,
                     datatype: "json", // data format
                     mtype: "GET", // request type
+                    // description of model
                     colModel: jqGridCustomer.getColModel(),
                     rowNum: 500, // number of rows displayed
                     loadonce: false, // load only once
@@ -88,7 +88,7 @@ var JqGridCustomer = (function ($) {
                     pager: 'jqPagerCustomer'
                 });
             },
-            // опции редактирования
+            // returns the options for editing
             getEditOptions: function () {
                 return {
                     url: jqGridCustomer.options.baseAddress + '/customer/edit',
@@ -99,18 +99,18 @@ var JqGridCustomer = (function ($) {
                     width: 400,
                     afterSubmit: jqGridCustomer.afterSubmit,
                     editData: {
-                        // дополнительно к значениям из формы передаём ключевое поле
+                        // Add the value of the key field to the form fields
                         CUSTOMER_ID: function () {
-                            // получаем текущую строку
+                            // get current row
                             var selectedRow = jqGridCustomer.dbGrid.getGridParam("selrow");
-                            // получаем значение интересуещего нас поля
+                            // get value of key field
                             var value = jqGridCustomer.dbGrid.getCell(selectedRow, 'CUSTOMER_ID');
                             return value;
                         }
                     }
                 };
             },
-            // опции добавления
+            // returns the options for adding
             getAddOptions: function () {
                 return {
                     url: jqGridCustomer.options.baseAddress + '/customer/create',
@@ -122,7 +122,7 @@ var JqGridCustomer = (function ($) {
                     afterSubmit: jqGridCustomer.afterSubmit
                 };
             },
-            // опции удаления
+            // returns the options for deleting
             getDeleteOptions: function () {
                 return {
                     url: jqGridCustomer.options.baseAddress + '/customer/delete',
@@ -130,10 +130,10 @@ var JqGridCustomer = (function ($) {
                     closeOnEscape: true,
                     closeAfterDelete: true,
                     drag: true,
-                    msg: "Удалить выделенного заказчика?",
+                    msg: "Are you sure you want to delete the customer?",
                     afterSubmit: jqGridCustomer.afterSubmit,
                     delData: {
-                        // передаём ключевое поле
+                        // transfer key field
                         CUSTOMER_ID: function () {
                             var selectedRow = jqGridCustomer.dbGrid.getGridParam("selrow");
                             var value = jqGridCustomer.dbGrid.getCell(selectedRow, 'CUSTOMER_ID');
@@ -142,7 +142,7 @@ var JqGridCustomer = (function ($) {
                     }
                 };
             },
-            // инициализация панели навигации вместе с диалогами редактирования
+            // initializing the navigation bar along with editing dialogs
             initPagerWithEditors: function () {
                 jqGridCustomer.dbGrid.jqGrid('navGrid', '#jqPagerCustomer',
                         {
@@ -153,7 +153,7 @@ var JqGridCustomer = (function ($) {
                             del: true, 
                             view: true, 
                             refresh: true, 
-                            // подписи кнопок
+                            // captions
                             searchtext: "Search",
                             addtext: "Add",
                             edittext: "Edit",
@@ -167,18 +167,18 @@ var JqGridCustomer = (function ($) {
                         jqGridCustomer.getDeleteOptions()
                         );
             },
-            // инициализация панели навигации вместе без диалогов редактирования
+            // initializing the navigation bar along without editing dialogs
             initPagerWithoutEditors: function () {
                 jqGridCustomer.dbGrid.jqGrid('navGrid', '#jqPagerCustomer',
                         {
-                            // кнопки
+                            // buttons
                             search: true, 
                             add: false,
                             edit: false, 
                             del: false, 
                             view: false,
                             refresh: true, 
-                            // подписи кнопок
+                            // captions
                             searchtext: "Search",
                             viewtext: "View",
                             viewtitle: "Selected record",
@@ -186,7 +186,7 @@ var JqGridCustomer = (function ($) {
                         }
                 );
             },
-            // инициализация панели навигации
+            // initializing the navigation bar
             initPager: function () {
                 if (jqGridCustomer.options.showEditorPanel) {
                     jqGridCustomer.initPagerWithEditors();
@@ -194,21 +194,21 @@ var JqGridCustomer = (function ($) {
                     jqGridCustomer.initPagerWithoutEditors();
                 }
             },
-            // инициализация
+            // initializing
             init: function () {
                 jqGridCustomer.initGrid();
                 jqGridCustomer.initPager();
             },
-            // обработчик результатов обработки форм (операций)
+            // form results (operations) handler
             afterSubmit: function (response, postdata) {
                 var responseData = response.responseJSON;
-                // проверяем результат на наличие сообщений об ошибках
+                // check the result for error messages
                 if (responseData.hasOwnProperty("error")) {
                     if (responseData.error.length) {
                         return [false, responseData.error];
                     }
                 } else {
-                    // если не была возвращена ошибка обновляем грид
+                    // if an error was not returned, update the grid
                     $(this).jqGrid(
                             'setGridParam',
                             {

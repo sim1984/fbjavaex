@@ -43,7 +43,7 @@
             <version>${jstl.version}</version>  
         </dependency>   
         
-        <!-- Работа с JSON -->
+        <!-- Working with JSON -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -103,7 +103,7 @@
             <version>3.0.0</version>
         </dependency>  
         
-        <!-- Пул коннектов -->  
+        <!-- Connection pool -->  
         
         <dependency>
             <groupId>commons-dbcp</groupId>
