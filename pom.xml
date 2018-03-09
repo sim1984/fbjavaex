@@ -14,7 +14,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>4.3.4.RELEASE</spring.version>
         <jstl.version>1.2</jstl.version>
-        <javax.servlet.version>3.0.1</javax.servlet.version>    
+        <javax.servlet.version>3.0.1</javax.servlet.version>   
+        <jaybird.version>3.0.0</jaybird.version>  
+        <org.jooq.version>3.9.2</org.jooq.version>
         <db.url>jdbc:firebirdsql://localhost:3053/examples</db.url>    
         <db.driver>org.firebirdsql.jdbc.FBDriver</db.driver>
         <db.username>SYSDBA</db.username>
@@ -100,7 +102,7 @@
         <dependency>
             <groupId>org.firebirdsql.jdbc</groupId>
             <artifactId>jaybird-jdk18</artifactId>
-            <version>3.0.0</version>
+            <version>${jaybird.version}</version>
         </dependency>  
         
         <!-- Connection pool -->  
@@ -116,19 +118,19 @@
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
-            <version>3.9.2</version>
+            <version>${org.jooq.version}</version>
         </dependency>
         
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq-meta</artifactId>
-            <version>3.9.2</version>
+            <version>${org.jooq.version}</version>
         </dependency>
         
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq-codegen</artifactId>
-            <version>3.9.2</version>
+            <version>${org.jooq.version}</version>
         </dependency>   
         
         <!-- Testing -->
@@ -197,6 +199,81 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- The jOOQ code generator plugin -->
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>${org.jooq.version}</version>
+
+                <executions>
+                    <execution>
+                        <id>generate-firebird</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <jdbc>
+                                <driver>${db.driver}</driver>
+                                <url>${db.url}</url>
+                                <user>${db.username}</user>
+                                <password>${db.password}</password>
+                                <properties>
+                                    <property>
+                                        <key>charSet</key>
+                                        <value>utf-8</value>
+                                    </property>
+                                </properties>
+                            </jdbc>
+
+                            <generator>
+                                <name>org.jooq.util.JavaGenerator</name>
+
+                                <database>
+                                    <!-- Database type. Format:
+                                    org.util.[database].[database]Database -->
+                                    <name>org.jooq.util.firebird.FirebirdDatabase</name>
+
+                                    <inputSchema></inputSchema>
+
+                                    <!-- All elements that are generated from your schema (A Java regular expression.
+                                        Use the pipe to separate several expressions) Watch out for
+                                        case-sensitivity. Depending on your database, this might be
+                                        important!
+           
+                                        You can create case-insensitive regular expressions using this syntax: (?i:expr)
+           
+                                        Whitespace is ignored and comments are possible.
+                                    -->
+                                    <includes>.*</includes>
+
+                                    <!-- All elements that are excluded from your schema (A Java regular expression.
+                                        Use the pipe to separate several expressions). Excludes match before
+                                        includes, i.e. excludes have a higher priority -->
+                                    <excludes>
+                                        RDB\$.*
+                                        | MON\$.*
+                                        | SEC\$.*
+                                    </excludes>
+                                </database>
+
+                                <target>
+                                    <!-- The destination package of your generated classes (within the
+                                        destination directory)
+           
+                                        jOOQ may append the schema name to this package if generating multiple schemas,
+                                        e.g. org.jooq.your.packagename.schema1
+                                             org.jooq.your.packagename.schema2 -->
+                                    <packageName>ru.ibase.fbjavaex.exampledb</packageName>
+
+                                    <!-- The destination directory of your generated classes -->
+                                    <directory>src/main/java/</directory>
+                                </target>
+                            </generator>
+                        </configuration>
+                    </execution>
+                </executions>   
+            </plugin>     
         </plugins>
     </build>
 
