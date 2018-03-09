@@ -199,6 +199,12 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Jetty -->
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.4.8.v20171121</version>
+            </plugin>
             <!-- The jOOQ code generator plugin -->
             <plugin>
                 <groupId>org.jooq</groupId>
@@ -261,9 +267,9 @@
                                     <!-- The destination package of your generated classes (within the
                                         destination directory)
            
-                                        jOOQ may append the schema name to this package if generating multiple schemas,
-                                        e.g. org.jooq.your.packagename.schema1
-                                             org.jooq.your.packagename.schema2 -->
+                               jOOQ may append the schema name to this package if generating multiple schemas,
+                               e.g. org.jooq.your.packagename.schema1
+                                    org.jooq.your.packagename.schema2 -->
                                     <packageName>ru.ibase.fbjavaex.exampledb</packageName>
 
                                     <!-- The destination directory of your generated classes -->
