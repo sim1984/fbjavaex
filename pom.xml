@@ -15,7 +15,7 @@
         <spring.version>4.3.4.RELEASE</spring.version>
         <jstl.version>1.2</jstl.version>
         <javax.servlet.version>3.0.1</javax.servlet.version>   
-        <jaybird.version>3.0.0</jaybird.version>  
+        <jaybird.version>3.0.4</jaybird.version>  
         <org.jooq.version>3.9.2</org.jooq.version>
         <db.url>jdbc:firebirdsql://localhost:3053/examples</db.url>    
         <db.driver>org.firebirdsql.jdbc.FBDriver</db.driver>
